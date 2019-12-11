@@ -1,20 +1,64 @@
 
 const axios = require("axios");
 const inquirer = require("inquirer");
-const generatehtml = require("./generateHTML.js")
+const generatehtml = require("./generateHTML")
+const PDFDocument = require('pdfkit');
+const doc = new PDFDocument;
+const pdf = require('html-pdf');
 
 // var conversion = convertFactory({ converterPath: convertFactory.converters.PDF });
 
 const fs = require('fs');
 const convertFactory = require('electron-html-to');
 
-//console.log(generatehtml);
-let watchers = [];
+const colors = {
+    green: {
+      wrapperBackground: "#E6E1C3",
+      headerBackground: "#C1C72C",
+      headerColor: "black",
+      photoBorderColor: "#black"
+    },
+    blue: {
+      wrapperBackground: "#5F64D3",
+      headerBackground: "#26175A",
+      headerColor: "white",
+      photoBorderColor: "#73448C"
+    },
+    pink: {
+      wrapperBackground: "#879CDF",
+      headerBackground: "#FF8374",
+      headerColor: "white",
+      photoBorderColor: "#FEE24C"
+    },
+    red: {
+      wrapperBackground: "#DE9967",
+      headerBackground: "#870603",
+      headerColor: "white",
+      photoBorderColor: "white"
+    }
+  };
+  
+// let watchers = [];
+
+const options = { format: 'Letter' };
+
+let feedback = {
+    avatar: '',
+    name: '',
+    location: '',
+    profile: '',
+    blog: '',
+    bio: '',
+    repos: '',
+    followers: '',
+    following: '',
+    stars: '',
+};
 
 inquirer.prompt([
     {
         type: "input",
-        name: "githubusername",
+        name: "username",
         message: "What is your GitHub UserName?"
     },
     {
@@ -28,91 +72,97 @@ inquirer.prompt([
             "red"
         ]
     }
-]).then(function ({ githubusername, mycolor }) {
+]
+// ).then(function ({ username, mycolor }) {
 
-    // console.log(githubusername);
-    // console.log(mycolor);
+//     console.log(username);
+//     console.log(mycolor);
 
-    const queryURL = `https://api.github.com/users/${githubusername}/repos?per_page=100`;
-    const queryURL2 = `https://api.github.com/users/${githubusername}`;
+    
+// const queryURL = `https://api.github.com/users/${username}/repos?per_page=100`;
+//     const queryURL2 = `https://api.github.com/users/${username}`;
+//     axios.get(queryURL2)
+//         .then(function (response) {
 
-    axios.get(queryURL2)
-        .then(function (res) {
-
-            let githubandcolorinfo = {
-                color: mycolor,
-                profileimageurl: res.data.avatar_url,
-                username: res.data.name,
-                location: res.data.location,
-                profilelink: res.data.html_url,
-                blog: res.data.blog,
-                bio: res.data.bio,
-                publicrepos: res.data.public_repos,
-                followers: res.data.followers,
-                following: res.data.following,
-            };
-            // * Profile image
-            //console.log("profile image" + res.data.avatar_url);
-            // * User name
-            //console.log("username" + res.data.login);
-            // * Links to the following:
-            //     * User location via Google Maps
-            //console.log("location" + res.data.location);
-            //     * User GitHub profile
-            //console.log("profile link" + res.data.html_url)
-            //     * User blog
-            //console.log("blog" + res.data.blog);
-            // * User bio
-            //console.log("bio" + res.data.bio);
-            // * Number of public repositories
-            //console.log("public repos" + res.data.public_repos);
-            // * Number of followers
-            //console.log("followers" + res.data.followers);
-            // * Number of users following
-            //console.log("following" + res.data.following);
-
-            axios.get(queryURL)
-                .then(function (res) {
-                    for (let i = 0; i < res.data.length; i++) {
-                        watchers.push(res.data[i].watchers_count);
-                    }
-                    console.log(watchers);
-                    let totalwatchers = watchers.reduce((a, b) => a + b);
-
-                    //  Number of GitHub stars
-                    console.log("watches/stars" + totalwatchers);
-
-                    // fs.writeFile("myselection.txt",)
-                    githubandcolorinfo.stars = totalwatchers;
-                    // console.log(githubandcolorinfo);
-                    generatehtml(githubandcolorinfo);
+//             let feedback = {
+//                 color: mycolor,
+//                 profileimageurl: response.data.avatar_url,
+//                 username: response.data.name,
+//                 location: response.data.location,
+//                 profilelink: response.data.html_url,
+//                 blog: response.data.blog,
+//                 bio: response.data.bio,
+//                 publicrepos: response.data.public_repos,
+//                 followers: response.data.followers,
+//                 following: response.data.following,
+//             };
 
 
+            )
+            .then(function({ username }) {
+                const queryURL2 = `https://api.github.com/users/${username}`;
+                const queryURL = `https://api.github.com/users/${username}/repos?per_page=100`;
+            
+            axios.get(queryURL2).then(function(response){
+              const repoNames = response.data.avatar_url;
+            
+            
+              feedback.avatar=response.data.avatar_url;
+              feedback.name=response.data.login;
+              feedback.location=response.data.location;
+              feedback.profile=response.data.html_url;
+              feedback.blog=response.data.blog;
+              feedback.bio=response.data.bio;
+              feedback.repos=response.data.public_repos;
+              feedback.followers=response.data.followers;
+              feedback.following=response.data.following;
+              feedback.stars=response.data.starred_url;
 
-                    fs.writeFile("resume.html", generatehtml(githubandcolorinfo), function (err) {
-                        if (err) {
-                            return console.log(err);
-                        }
-                        console.log("Done!");
-                    })
+                console.log(feedback);
+
+            // axios.get(queryURL)
+            //     .then(function (response) {
+            //         for (let i = 0; i < response.data.length; i++) {
+            //             watchers.push(response.data[i].watchers_count);
+            //         }
+            //         // console.log(watchers);
+            //         let totalwatchers = watchers.reduce((a, b) => a + b);
+
+            //         //  Number of GitHub stars
+            //         console.log("watches/stars" + totalwatchers);
+
+            //         // fs.writeFile("myselection.txt",)
+            //         feedback.stars = totalwatchers;
+                    
+            //         generatehtml(feedback);
 
 
-                    fs.readFile('resume.html', 'utf8', (err, htmlString) => {
-                        // add local path in case your HTML has relative paths
-                        htmlString = htmlString.replace(/href="|src="/g, match => {
-                            return match + './';
-                        });
-                        const conversion = convertFactory({
-                            converterPath: convertFactory.converters.PDF,
-                            allowLocalFilesAccess: true
-                        });
-                        conversion({ html: htmlString }, (err, result) => {
-                            if (err) return console.error(err);
-                            result.stream.pipe(fs.createWriteStream('./resume.pdf'));
-                            conversion.kill(); 
-                        });
-                    });
 
-                });
+            //         fs.writeFile("resume.html", generatehtml(feedback), function (err) {
+            //             if (err) {
+            //                 return console.log(err);
+            //             }
+            //             console.log("Done!");
+            //         })
+
+
+            //         fs.readFile('resume.html', 'utf8', (err, htmlString) => {
+            //             // add local path in case your HTML has relative paths
+            //             htmlString = htmlString.replace(/href="|src="/g, match => {
+            //                 return match + './';
+            //             });
+            //             const conversion = convertFactory({
+            //                 converterPath: convertFactory.converters.PDF,
+            //                 allowLocalFilesAccess: true
+            //             });
+            //             conversion({ html: htmlString }, (err, result) => {
+            //                 if (err) return console.error(err);
+            //                 result.stream.pipe(fs.createWriteStream('./resume.pdf'));
+            //                 conversion.kill(); 
+            //             });
+            //         });
+
+            //     });
         })
+
 })
