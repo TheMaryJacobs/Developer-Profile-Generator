@@ -25,8 +25,9 @@ const colors = {
   }
 };
 
-function generateHTML(data) {
-  return `<!DOCTYPE html>
+// function generateHTML(data) {
+//   return 
+let html =`<!DOCTYPE html>
   <html lang="en">
      <head>
         <meta charset="UTF-8" />
@@ -52,7 +53,7 @@ function generateHTML(data) {
            height: 100%;
            }
            .wrapper {
-           background-color: ${colors[data.color].wrapperBackground};
+           background-color: salmon;
            padding-top: 100px;
            }
            body {
@@ -94,8 +95,8 @@ function generateHTML(data) {
            display: flex;
            justify-content: center;
            flex-wrap: wrap;
-           background-color: ${colors[data.color].headerBackground};
-           color: ${colors[data.color].headerColor};
+           background-color: salmon;
+           color: black;
            padding: 10px;
            width: 95%;
            border-radius: 6px;
@@ -106,7 +107,7 @@ function generateHTML(data) {
            border-radius: 50%;
            object-fit: cover;
            margin-top: -75px;
-           border: 6px solid ${colors[data.color].photoBorderColor};
+           border: 6px solid black;
            box-shadow: rgba(0, 0, 0, 0.3) 4px 1px 20px 4px;
            }
            .photo-header h1, .photo-header h2 {
@@ -149,8 +150,8 @@ function generateHTML(data) {
            .card {
              padding: 20px;
              border-radius: 6px;
-             background-color: ${colors[data.color].headerBackground};
-             color: ${colors[data.color].headerColor};
+             background-color: b;
+             color: white;
              margin: 20px;
            }
            
@@ -229,5 +230,5 @@ function generateHTML(data) {
                   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js" integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs=" crossorigin="anonymous"></script>
                   </body>
                   </html>`
-}
+
 
