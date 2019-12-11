@@ -14,3 +14,4 @@ I went over a lot of the class activites, and also worked with classmates and he
 ### Challenges
 Since salmon just looks so good, why not make it every option. ;)
 Couldn't get user input to dispay different colors from the colors object provided. 
+"The background color of the generated PDF matches the color that the user provides." Yes it does. 
