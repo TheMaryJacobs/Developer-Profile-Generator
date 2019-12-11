@@ -18,8 +18,6 @@ let feedback = {
     followers: '',
     following: '',
     stars: '',
-    // bgColor: '',
-
 
 };
 
@@ -139,7 +137,7 @@ let html = `<!DOCTYPE html>
          width: 250px;
          height: 250px;
          border-radius: 50%;
-         object-fit: cover;
+        
          margin-top: -75px;
          border: 6px solid black;
          box-shadow: rgba(0, 0, 0, 0.3) 4px 1px 20px 4px;
@@ -215,7 +213,7 @@ let html = `<!DOCTYPE html>
                        <h2 class= "photo-header h1">Hi!</h1>
                        <h1 class ="h1" id = "username">I'm ${feedback.name}</h1>
                         <div class = "links-nav">
-                            <a href= "" class = "link-nav"></a>
+                        <a href= "${feedback.location}" class = "link-nav">${feedback.location}</a>
                             <i class="fab fa-github"></i><a href = "${feedback.profile}" id = "profilelink" class = "nav-link" target="_blank" >GitHub</a>
                       </div> 
                   <div class="container">
